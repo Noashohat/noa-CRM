@@ -1,4 +1,5 @@
 const joi = require("joi");
+const objectId = require("joi-objectid");
 const mongo = require("./database");
 const fileMgmt = require("../shared/fileMgmt");
 
@@ -6,23 +7,16 @@ module.exports = {
   addNewCard: async function (req, res, next) {
     const reqBody = req.body;
 
-    // function validateUser(user) {
-    //   const schema = Joi.object({
-    //     name: Joi.string().min(2).max(255).required(),
-    //     email: Joi.string().min(6).max(255).required().email(),
-    //     password: Joi.string().min(6).max(1024).required(),
-    //     biz: Joi.boolean().required(),
-    //   });
-
     const schema = joi.object({
-      bizname: joi.string().required().min(2).max(200),
-      bizDescription: Joi.string().min(2).max(1024).required(),
-      bizAddress: Joi.string().min(2).max(400).required(),
-      bizPhone: joi
+      businessName: joi.string().required().min(2).max(200),
+      businessDescription: Joi.string().min(2).max(1024).required(),
+      businessAddress: Joi.string().min(2).max(400).required(),
+      businessPhone: joi
         .string()
         .required()
         .regex(/^[0-9]{8,11}$/),
-      bizImage: joi.string().min(11).max(1024),
+      businessPic: joi.string().min(11).max(1024),
+      customerId: Joi.objectId().required(),
     });
 
     const { error, value } = schema.validate(reqBody);
@@ -31,10 +25,6 @@ module.exports = {
       res.send(`error adding card: ${error}`);
       return;
     }
-
-    // const sql =
-    //     "INSERT INTO customers(name, phone, email, country_id)" +
-    //     " VALUES(?,?,?,?);";
 
     try {
       const database = await mongo.getDb();
@@ -47,8 +37,14 @@ module.exports = {
     }
   },
 
-  getCardDetails: async function (req, res, next) {},
-  getCustomerCardsDetails: async function (req, res, next) {},
+  getCardDetails: async function (req, res, next) {
+    //collection.find()
+  },
+  getCustomerCardsDetails: async function (req, res, next) {
+    //collection.find({customerId:value})
+  },
   editCardDetails: async function (req, res, next) {},
-  deleteCard: async function (req, res) {},
+  deleteCard: async function (req, res) {
+    //collection.delete({businessName:value})
+  },
 };
