@@ -16,7 +16,7 @@ module.exports = {
         .required()
         .regex(/^[0-9]{8,11}$/),
       businessPic: joi.string().min(11).max(1024),
-      customerId: Joi.objectId().required(),
+      customerId: joi.objectId().required(),
     });
 
     const { error, value } = schema.validate(reqBody);
@@ -38,10 +38,51 @@ module.exports = {
   },
 
   getCardDetails: async function (req, res, next) {
-    //collection.find()
+    //collection.find({id:value})
+    const param = req.query;
+    ////todo: validate card id!
+    const schema = joi.object({
+      id: joi.number().required(),
+    });
+    //     try {
+    //       const database = await mongo.getDb();
+    //       const collection = database.collection('cards');
+
+    //       const result = await collection
+    //           .find({})
+    //           .sort({ name: 1 }) // ASC
+    //           .toArray();
+
+    //       res.json(result);
+    //   }
+    //   catch (err) {
+    //       console.log(err);
+    //       res.status(400).send(err);
+    //   }
   },
   getCustomerCardsDetails: async function (req, res, next) {
     //collection.find({customerId:value})
+    const param = req.query;
+    //todo: validate id of customer
+    const schema = joi.object({
+      customerId: joi.number().required(),
+    });
+
+    //     try {
+    //       const database = await mongo.getDb();
+    //       const collection = database.collection('cards');
+
+    //       const result = await collection
+    //           .find({})
+    //           .sort({ name: 1 }) // ASC
+    //           .toArray();
+
+    //       res.json(result);
+    //   }
+    //   catch (err) {
+    //       console.log(err);
+    //       res.status(400).send(err);
+    //   }
   },
   editCardDetails: async function (req, res, next) {
     const reqBody = req.body;
@@ -127,6 +168,7 @@ module.exports = {
   // },
 
   deleteCard: async function (req, res) {
+    const param = req.query;
     const schema = joi.object({
       id: joi.number().required(),
     });

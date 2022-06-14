@@ -54,5 +54,6 @@ module.exports = {
 
   getCustomerDetails: async function (req, res, next) {
     //collection.find()
+    // todp: validate customer id
   },
 };

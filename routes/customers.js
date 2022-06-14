@@ -11,13 +11,9 @@ const fileMgmt = require("../shared/fileMgmt");
 //   res.sendFile(filePath);
 // });
 
-router.get("/customers", cm.customersList);
-// router.get('/find', cm.findCustomer);
-// router.get   ('/details', cm.viewCustomerDetails);
-
 // router.patch ('/', cm.updateCustomer);
 router.post("/customers", cm.addCustomer);
 // router.delete('/', cm.deleteCustomer);
 
-router.get("/customers", cm.getCustomerDetails);
+router.get("/details", cm.getCustomerDetails);
 module.exports = router;
