@@ -1,8 +1,23 @@
 const express = require("express");
 const router = express.Router();
+const cm = require("../controllers/customers");
+const fileMgmt = require("../shared/fileMgmt");
+// const bcrypt = require("bcrypt");
 
-router.get("/", (req, res) => {
-  res.send("works");
-});
+// // http://localhost:3000/customers
 
+// router.get("/home", function (req, res, next) {
+//   const filePath = fileMgmt.getHtmlFilePath("customers-home.html");
+//   res.sendFile(filePath);
+// });
+
+router.get("/customers", cm.customersList);
+// router.get('/find', cm.findCustomer);
+// router.get   ('/details', cm.viewCustomerDetails);
+
+// router.patch ('/', cm.updateCustomer);
+router.post("/customers", cm.addCustomer);
+// router.delete('/', cm.deleteCustomer);
+
+router.get("/customers", cm.getCustomerDetails);
 module.exports = router;

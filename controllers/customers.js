@@ -1,10 +1,20 @@
 const joi = require("joi");
 const mongo = require("./database");
 const fileMgmt = require("../shared/fileMgmt");
+const bcrypt = require("bcrypt");
 
 module.exports = {
+  login: async function (req, res, next) {},
   addCustomer: async function (req, res, next) {
     const reqBody = req.body;
+
+    // function validateUser(user) {
+    //   const schema = Joi.object({
+    //     name: Joi.string().min(2).max(255).required(),
+    //     email: Joi.string().min(6).max(255).required().email(),
+    //     password: Joi.string().min(6).max(1024).required(),
+    //     biz: Joi.boolean().required(),
+    //   });
 
     const schema = joi.object({
       name: joi.string().required().min(2).max(200),
@@ -16,7 +26,7 @@ module.exports = {
         .string()
         .required()
         .regex(/^[^@]+@[^@]+$/),
-      countryId: joi.string().required(),
+      password: joi.string().min(6).max(1024).required(),
     });
 
     const { error, value } = schema.validate(reqBody);
@@ -78,4 +88,5 @@ module.exports = {
       res.status(400).send(err);
     }
   },
+  getCustomerDetails: async function (req, res, next) {},
 };
