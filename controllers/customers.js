@@ -88,5 +88,6 @@ module.exports = {
       res.status(400).send(err);
     }
   },
+
   getCustomerDetails: async function (req, res, next) {},
 };
