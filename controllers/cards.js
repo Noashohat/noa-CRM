@@ -44,7 +44,37 @@ module.exports = {
     //collection.find({customerId:value})
   },
   editCardDetails: async function (req, res, next) {},
-  deleteCard: async function (req, res) {
-    //collection.delete({businessName:value})
+  deleteCard: async function (req, res) {},
+
+  deleteProduct: async function (req, res, next) {
+    // get client id that we want to delete
+    // validate: number not null
+    // const sql = DELETE
+    // return details of deleted product
+
+    const schema = joi.object({
+      id: joi.number().required(),
+    });
+
+    const { error, value } = schema.validate(req.params);
+
+    if (error) {
+      res.status(400).send("error delete card");
+      console.log(error.details[0].message);
+      return;
+    }
+
+    try {
+      const database = await mongo.getDb();
+      const collection = database.collection("cards");
+
+      collection.delete({ id: value });
+      res.json({
+        id: value.id,
+      });
+    } catch (err) {
+      res.status(400).send("error delete card");
+      console.log(err.message);
+    }
   },
 };
