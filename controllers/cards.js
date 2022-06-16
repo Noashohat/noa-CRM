@@ -1,40 +1,49 @@
 const joi = require("joi");
 const objectId = require("joi-objectid");
-const mongo = require("./database");
+const database = require("./database");
 const fileMgmt = require("../shared/fileMgmt");
 
 module.exports = {
   addNewCard: async function (req, res, next) {
-    const reqBody = req.body;
+    // const reqBody = req.body;
 
-    const schema = joi.object({
-      businessName: joi.string().required().min(2).max(200),
-      businessDescription: Joi.string().min(2).max(1024).required(),
-      businessAddress: Joi.string().min(2).max(400).required(),
-      businessPhone: joi
-        .string()
-        .required()
-        .regex(/^[0-9]{8,11}$/),
-      businessPic: joi.string().min(11).max(1024),
-      customerId: joi.objectId().required(),
-    });
+    // const schema = joi.object({
+    //   businessName: joi.string().required().min(2).max(200),
+    //   businessDescription: Joi.string().min(2).max(1024).required(),
+    //   businessAddress: Joi.string().min(2).max(400).required(),
+    //   businessPhone: joi
+    //     .string()
+    //     .required()
+    //     .regex(/^[0-9]{8,11}$/),
+    //   businessPic: joi.string().min(11).max(1024),
+    //   customerId: joi.objectId().required(),
+    // });
 
-    const { error, value } = schema.validate(reqBody);
+    // const { error, value } = schema.validate(reqBody);
 
-    if (error) {
-      res.send(`error adding card: ${error}`);
+    // if (error) {
+    //   res.send(`error adding card: ${error}`);
+    //   return;
+    // }
+
+    const sql =
+      "INSERT INTO customers(name, phone, email, country_id)" +
+      " VALUES(?,?,?,?);";
+
+    try {
+      const result = await database.query(sql, [
+        reqBody.name,
+        reqBody.phone,
+        reqBody.email,
+      ]);
+
+      console.log(result);
+    } catch (err) {
+      console.log(err);
       return;
     }
 
-    try {
-      const database = await mongo.getDb();
-      const collection = database.collection("cards");
-      collection.insertOne(value); // { name: '', phone..., email}
-      res.json(value);
-    } catch (err) {
-      console.log(err);
-      res.status(400).send(`error adding card`);
-    }
+    res.send(`${reqBody.name} added successfully`);
   },
 
   getCardDetails: async function (req, res, next) {
