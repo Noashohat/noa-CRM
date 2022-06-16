@@ -52,20 +52,18 @@ module.exports = {
   },
 
   getCardDetails: async function (req, res, next) {
-    //collection.find({id:value})
-    const param = req.query;
+    const sql = `SELECT * FROM cards WHERE id=${req.params.id}`;
     ////todo: validate card id!
     const schema = joi.object({
       id: joi.number().required(),
     });
-    //     try {
-    //       const database = await mongo.getDb();
-    //       const collection = database.collection('cards');
-
-    //       const result = await collection
-    //           .find({})
-    //           .sort({ name: 1 }) // ASC
-    //           .toArray();
+    try {
+      const result = await database.query(sql, [req.params.id]);
+      res.json(result);
+    } catch (error) {
+      console.log(error);
+      res.status(400).send("error getting card details");
+    }
 
     //       res.json(result);
     //   }
@@ -79,7 +77,7 @@ module.exports = {
     const param = req.query;
     //todo: validate id of customer
     const schema = joi.object({
-      customerId: joi.number().required(),
+      customer_id: joi.number().required(),
     });
 
     //     try {
@@ -139,6 +137,7 @@ module.exports = {
       res.json(value);
     } catch (err) {
       console.log(err);
+      res.status(400).send(`error update card`);
       return;
     }
   },
