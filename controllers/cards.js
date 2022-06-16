@@ -1,43 +1,48 @@
 const joi = require("joi");
-const objectId = require("joi-objectid");
 const database = require("./database");
 const fileMgmt = require("../shared/fileMgmt");
 
 module.exports = {
   addNewCard: async function (req, res, next) {
-    // const reqBody = req.body;
+    const reqBody = req.body;
 
-    // const schema = joi.object({
-    //   businessName: joi.string().required().min(2).max(200),
-    //   businessDescription: Joi.string().min(2).max(1024).required(),
-    //   businessAddress: Joi.string().min(2).max(400).required(),
-    //   businessPhone: joi
-    //     .string()
-    //     .required()
-    //     .regex(/^[0-9]{8,11}$/),
-    //   businessPic: joi.string().min(11).max(1024),
-    //   customerId: joi.objectId().required(),
-    // });
+    const schema = joi.object({
+      customer_id: joi
+        .string()
+        .required()
+        .regex(/^(?=.*[a-z])[a-z0-9]{8,20}$/i),
+      bizName: joi.string().min(2).max(255).required(),
+      bizDescription: joi.string().min(2).max(1024).required(),
+      bizAddress: joi.string().min(2).max(400).required(),
+      bizPhone: joi
+        .string()
+        .min(9)
+        .max(10)
+        .required()
+        .regex(/^0[2-9]\d{7,8}$/),
+      bizImage: joi.string().min(11).max(1024),
+    });
 
-    // const { error, value } = schema.validate(reqBody);
+    const { error, value } = schema.validate(reqBody);
 
-    // if (error) {
-    //   res.send(`error adding card: ${error}`);
-    //   return;
-    // }
+    if (error) {
+      res.send(`error adding product: ${error}`);
+      return;
+    }
 
     const sql =
-      "INSERT INTO customers(name, phone, email, country_id)" +
-      " VALUES(?,?,?,?);";
+      "INSERT INTO cards( customer_id, bizName, bizDescription,bizAddress,bizPhone,bizImage)" +
+      " VALUES(?,?,?,?,?,?);";
 
     try {
       const result = await database.query(sql, [
-        reqBody.name,
-        reqBody.phone,
-        reqBody.email,
+        reqBody.customer_id,
+        reqBody.bizName,
+        reqBody.bizDescription,
+        reqBody.bizAddress,
+        reqBody.bizPhone,
+        reqBody.bizImage,
       ]);
-
-      console.log(result);
     } catch (err) {
       console.log(err);
       return;

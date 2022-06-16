@@ -13,7 +13,12 @@ const fileMgmt = require("../shared/fileMgmt");
 
 // router.patch ('/', cm.updateCustomer);
 router.post("/customers", cm.addCustomer);
+
 // router.delete('/', cm.deleteCustomer);
 
 // router.get("/details", cm.getCustomerDetails);
-// module.exports = router;
+
+// router.post("/login", cm.login); --- AUTH
+// Insert Login Code Here
+
+module.exports = router;

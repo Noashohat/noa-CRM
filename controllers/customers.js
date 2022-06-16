@@ -5,12 +5,21 @@ const fileMgmt = require("../shared/fileMgmt");
 const bcrypt = require("bcrypt");
 
 module.exports = {
-  login: async function (req, res, next) {},
+  // register: async function (req, res, next) {
+  //   let username = req.body.username;
+  //   let password = req.body.password;
+  //   res.send(`Username: ${username} Password: ${password}`);
+  // },
+
   addCustomer: async function (req, res, next) {
     const reqBody = req.body;
 
     const schema = joi
       .object({
+        id: joi
+          .string()
+          .required()
+          .regex(/^(?=.*[a-z])[a-z0-9]{8,20}$/i),
         name: joi.string().required().min(2).max(200),
         phone: joi
           .string()
@@ -33,8 +42,8 @@ module.exports = {
     }
 
     const sql =
-      "INSERT INTO customers(name, phone, email, password,type)" +
-      " VALUES(?,?,?,?,?);";
+      "INSERT INTO customers(id,name, phone, email, password,type)" +
+      " VALUES(?,?,?,?,?,?);";
 
     try {
       const result = await database.query(sql, [
@@ -48,6 +57,11 @@ module.exports = {
       console.log(err);
       return;
     }
+
+    // const validPassword = await bcrypt.compare(
+    //   reqBody.password,
+    //   rows[0].password_hash
+    // );
 
     res.send(`${reqBody.name} added successfully`);
   },
