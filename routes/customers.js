@@ -15,5 +15,5 @@ const fileMgmt = require("../shared/fileMgmt");
 router.post("/customers", cm.addCustomer);
 // router.delete('/', cm.deleteCustomer);
 
-router.get("/details", cm.getCustomerDetails);
-module.exports = router;
+// router.get("/details", cm.getCustomerDetails);
+// module.exports = router;
