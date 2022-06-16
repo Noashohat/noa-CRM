@@ -37,7 +37,7 @@ module.exports = {
     const { error, value } = schema.validate(reqBody);
 
     if (error) {
-      res.send(`error adding customer: ${error}`);
+      res.status(400).send(`error adding customer: ${error}`);
       return;
     }
 
@@ -47,12 +47,22 @@ module.exports = {
 
     try {
       const result = await database.query(sql, [
+        reqBody.id,
         reqBody.name,
         reqBody.phone,
         reqBody.email,
         reqBody.password,
         reqBody.type,
       ]);
+
+      const value = [
+        reqBody.id,
+        reqBody.name,
+        reqBody.phone,
+        reqBody.email,
+        reqBody.password,
+        reqBody.type,
+      ];
     } catch (err) {
       console.log(err);
       return;
@@ -63,6 +73,6 @@ module.exports = {
     //   rows[0].password_hash
     // );
 
-    res.send(`${reqBody.name} added successfully`);
+    res.status(200).send.json(`${value} added successfully`);
   },
 };
