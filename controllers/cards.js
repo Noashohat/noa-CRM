@@ -142,32 +142,28 @@ module.exports = {
       return;
     }
   },
+
+  deleteCard: async function (req, res) {
+    const schema = joi.object({
+      id: joi.number.required(),
+    });
+
+    const { error, value } = schema.validate(req.params);
+
+    if (error) {
+      res.status(400).send("error delete card");
+      console.log(error);
+      return;
+    }
+
+    const sql = `DELETE FROM cards WHERE id=?`;
+
+    try {
+      const result = await database.query(sql, [value.id]);
+      res.json(result[0]);
+    } catch (err) {
+      res.status(400).send("error delete card");
+      console.log(err.message);
+    }
+  },
 };
-
-//   deleteCard: async function (req, res) {
-//     const param = req.query;
-//     const schema = joi.object({
-//       id: joi.number().required(),
-//     });
-
-//     const { error, value } = schema.validate(req.params);
-
-//     if (error) {
-//       res.status(400).send("error delete card");
-//       console.log(error.details[0].message);
-//       return;
-//     }
-
-//     try {
-//       const database = await mongo.getDb();
-//       const collection = database.collection("cards");
-
-//       collection.delete({ id: value });
-//       res.json({
-//         id: value.id,
-//       });
-//     } catch (err) {
-//       res.status(400).send("error delete card");
-//       console.log(err.message);
-//     }
-//

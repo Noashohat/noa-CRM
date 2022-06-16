@@ -13,4 +13,4 @@ router.post("/cards", cm.addNewCard);
 // router.get("/cards", cm.getCardDetails);
 // router.get("/cards", cm.getCustomerCardsDetails);
 router.put("/cards", cm.editCardDetails);
-// router.delete("/cards", cm.deleteCard);
+router.delete("/:id", cm.deleteCard);

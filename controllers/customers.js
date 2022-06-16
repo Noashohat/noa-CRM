@@ -17,7 +17,7 @@ module.exports = {
     const schema = joi
       .object({
         id: joi
-          .string()
+          .number()
           .required()
           .regex(/^(?=.*[a-z])[a-z0-9]{8,20}$/i),
         name: joi.string().required().min(2).max(200),
