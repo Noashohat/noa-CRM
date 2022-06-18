@@ -15,9 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "client")));
 
-// app.use("/", indexRouter);
-// app.use("/users", auth, usersRouter);
-// app.use("/customers", customersRouter);
+app.use("/customers", customersRouter);
 // app.use("/cards", auth, cardsRouter);
 
 // catch 404 err forward error handler
