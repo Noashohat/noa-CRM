@@ -1,14 +1,17 @@
-var express = require("express");
 var path = require("path");
 var logger = require("morgan");
 const createError = require("http-errors");
+const express = require("express");
+const app = express();
+const http = require("http").Server(app);
+
+const port = 3000;
+http.listen(port, () => console.log(`Listening on port ${port}...`));
 
 const auth = require("./middleware/auth");
 
 var customersRouter = require("./routes/customers");
 var cardsRouter = require("./routes/cards");
-
-var app = express();
 
 app.use(logger("dev"));
 app.use(express.json());
